@@ -1,0 +1,156 @@
+extends ./layout/index.pug
+block compartircontenido
+
+    main.container
+        h1 #{pagina}
+        div.lista-gerentes
+            button.btn.btn-primary.m-3.fw-bold(data-bs-toggle="modal" data-bs-target="#agregarHotel") Agregar Hotel 
+                i.fa-solid.fa-plus                
+            table.table.table-borderless.table-responsive
+                thead
+                    tr.table-head-style
+                        th(scope="col") id
+                        th(scope="col") Nombre
+                        th(scope="col") Direcion
+                        th(scope="col") Telefono
+                        th(scope="col") Correo
+                        th(scpoe="col") Id Gerente
+                        th(scpoe="col")                 
+                tbody
+                    each hotel in hoteles
+                        tr.table-body-style
+                            td #{hotel.id_htl}
+                            td #{hotel.nombre}
+                            td #{hotel.direccion}
+                            td #{hotel.telefono}
+                            td #{hotel.correo}
+                            td #{hotel.id_grt}
+                            td                        
+                                button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.telefono + hotel.id_grt + hotel.id_htl}`)
+                                    i.fa-regular.fa-pen-to-square
+                                button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.id_grt + hotel.id_htl + hotel.telefono}`)
+                                    i.fa-solid.fa-trash
+
+        <!--Agregar Gerente Modal-->
+            div.modal.fade(id="agregarHotel" tabindex="-1" aria-labelledby="agregarHotel" aria-hidden="true")
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title(id="agregarHotelLabel") Agregar Hotel
+                            button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                        div.modal-body
+                            if(errores)
+                                each error in errores
+                                    .alert.col.alert-danger.text-center=error.mensaje
+                            form(action="/agregarHoteles" method="POST")
+                                .mb-3
+                                    label.form-label(for='nombre') Nombre
+                                    input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
+                                    value=nombre)
+                                .mb-3
+                                    label.form-label(for='direccion') Direccion
+                                    input#direccion.form-control(type='text', placeholder="Direccion", name="direccion",
+                                    value=direccion)
+                                .mb-3
+                                    label.form-label(for='telefono') Telefono
+                                    input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
+                                    value=telefono)
+                                .mb-3
+                                    label.form-label(for='correo') Correo
+                                    input#correo.form-control(type='text', placeholder="Correo", name="correo",
+                                    value=correo)
+                                .mb-3
+                                    label.form-label(for='id_grt') ID Gerente
+                                    select.form-control(id="id_grt" aria-label="Default select example", name="id_grt")  
+                                        option(selected) Seleccionar un Gerente
+                                        each idGrt in idGrtSel
+                                            option(value=idGrt.dato1) #{idGrt.dato1}
+                                button.btn.btn-primary.btn-block(type="submit")  Agregar
+                        div.modal-footer
+                            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                            
+
+                <!--Modificar Gerente Modal-->
+
+            each hotel in hoteles
+                div.modal.fade(id=`mod${hotel.telefono + hotel.id_grt + hotel.id_htl}` tabindex="-1" aria-labelledby=`mod${hotel.telefono + hotel.id_grt + hotel.id_htl}` aria-hidden="true")
+                    div.modal-dialog
+                        div.modal-content
+                            div.modal-header
+                                h5.modal-title(id="modificarHotelesLabel") Modificar Hotel
+                                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                            div.modal-body
+                                if(errores)
+                                    each error in errores
+                                        .alert.col.alert-danger.text-center=error.mensaje
+                                form(action="/editarHotel" method="POST")
+                                    .mb
+                                        label.form-label(for='id_htl') ID
+                                        input#id_htl.form-control(type='number', placeholder="Id Hotel", name="id_htl",
+                                        value=hotel.id_htl readonly)
+                                    .mb-3
+                                        label.form-label(for='nombre') Nombre
+                                        input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
+                                        value=hotel.nombre)
+                                    .mb-3
+                                        label.form-label(for='direccion') Direccion
+                                        input#direccion.form-control(type='text', placeholder="Direccion", name="direccion",
+                                        value=hotel.direccion)
+                                    .mb-3
+                                        label.form-label(for='telefono') Telefono
+                                        input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
+                                        value=hotel.telefono)
+                                    .mb-3
+                                        label.form-label(for='correo') Correo
+                                        input#correo.form-control(type='text', placeholder="Correo", name="correo",
+                                        value=hotel.correo)
+                                    .mb-3
+                                        label.form-label(for='id_grt') ID Gerente
+                                        select.form-control(id="id_grt" aria-label="Default select example", name="id_grt")  
+                                            option(selected) #{hotel.id_grt}
+                                            each idGrt in idGrtSel
+                                                option(value=idGrt.dato1) #{idGrt.dato1}
+                                        <!--label.form-label(for='id_grt') Id Gerente-->
+                                        <!--input#id_grt.form-control(type='number', placeholder="ID Gerente", name="id_grt",-->
+                                        <!--value=hotel.id_grt)-->
+                                    button.btn.btn-primary.btn-block(type="submit")  Aceptar
+                            div.modal-footer
+                                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                                
+
+        <!--Eliminar Gerente Modal-->
+            each hotel in hoteles
+                div.modal.fade(id=`mod${hotel.id_grt + hotel.id_htl + hotel.telefono}` tabindex="-1" aria-labelledby= `mod${hotel.id_grt + hotel.id_htl + hotel.telefono}` aria-hidden="true")
+                    div.modal-dialog.modal-lg
+                        div.modal-content
+                            div.modal-header
+                                h5.modal-title(id="eliminarHotelLabel") Eliminar Hotel
+                                button.btn-close(id="disabledTextInput" type="button" data-bs-dismiss="modal" aria-label="Close")
+                            div.modal-body
+                                form(action="/eliminarHoteles" method="POST")
+                                    h2.modal-title ¿Seguro desea eliminar el hotel con Id?
+                                    input.form-control(type='text', placeholder="id_htl", name="id_htl",
+                                        value=`${hotel.id_htl}` readonly)
+                                    h2.modal-title ¿Y al gerente con Id?
+                                    input.form-control(type='text', placeholder="id_grt", name="id_grt",
+                                        value=`${hotel.id_grt}` readonly)
+                                    table.table.table-borderless
+                                        thead
+                                            tr
+                                                th(scope="col") Nombre
+                                                th(scope="col") Direcion
+                                                th(scope="col") Telefono
+                                                th(scope="col") Correo
+                                                th(scpoe="col") Id Gerente
+                                                th(scpoe="col") 
+                                        tbody
+                                            tr
+                                                td #{hotel.nombre}
+                                                td #{hotel.direccion}
+                                                td #{hotel.telefono}
+                                                td #{hotel.correo}
+                                                td #{hotel.id_grt}
+                                    button.btn.btn-danger(type="submit") Eliminar
+                            div.modal-footer
+                                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                                

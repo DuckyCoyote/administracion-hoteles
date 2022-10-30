@@ -1,0 +1,135 @@
+extends ./layout/index.pug
+block compartircontenido
+
+    main.container
+        h1 #{pagina}
+        div.lista-gerentes
+            button.btn.btn-primary.m-3.fw-bold(data-bs-toggle="modal" data-bs-target="#agregarGerente") Agregar Gerente 
+                i.fa-solid.fa-plus                
+            table.table.table-borderless.table-responsive
+                thead
+                    tr.table-head-style
+                        th(scope="col") id
+                        th(scope="col") Nombre
+                        th(scope="col") Apellido Paterno
+                        th(scope="col") Apellido Materno
+                        th(scope="col") Telefono
+                        th(scpoe="col")                
+                tbody
+                    each gerente in gerentes
+                        tr.table-body-style
+                            td #{gerente.id_grt}
+                            td #{gerente.nombre}
+                            td #{gerente.ap_paterno}
+                            td #{gerente.ap_materno}
+                            td #{gerente.telefono}
+                            td                        
+                                button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#${gerente.nombre + gerente.ap_materno + gerente.id_grt}`)
+                                    i.fa-regular.fa-pen-to-square
+                                button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#${gerente.nombre + gerente.id_grt + gerente.ap_materno}`)
+                                    i.fa-solid.fa-trash
+
+        <!--Agregar Gerente Modal-->
+            div.modal.fade(id="agregarGerente" tabindex="-1" aria-labelledby="agregarGerente" aria-hidden="true")
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title(id="agregarGerenteLabel") Agregar Gerente
+                            button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                        div.modal-body
+                            if(errores)
+                                each error in errores
+                                    .alert.col.alert-danger.text-center=error.mensaje
+                            form(action="/agregarGerentes" method="POST")
+                                .mb-3
+                                    label.form-label(for='nombre') Nombre
+                                    input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
+                                    value=nombre)
+                                .mb-3
+                                    label.form-label(for='apellidoPaterno') Apellido Paterno
+                                    input#apellidoPaterno.form-control(type='text', placeholder="Apellido Paterno", name="ap_paterno",
+                                    value=ap_paterno)
+                                .mb-3
+                                    label.form-label(for='apellidoMaterno') Apellido Materno
+                                    input#apellidoMaterno.form-control(type='text', placeholder="Apellido Materno", name="ap_materno",
+                                    value=ap_materno)
+                                .mb-3
+                                    label.form-label(for='telefono') Telefono
+                                    input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
+                                    value=telefono)
+                                button.btn.btn-primary.btn-block(type="submit")  Agregar
+                        div.modal-footer
+                            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                            
+
+
+                <!--Modificar Gerente Modal-->
+
+            each gerente in gerentes
+                div.modal.fade(id=`${gerente.nombre + gerente.ap_materno + gerente.id_grt}` tabindex="-1" aria-labelledby=`${gerente.nombre + gerente.ap_materno + gerente.id_grt}` aria-hidden="true")
+                    div.modal-dialog
+                        div.modal-content
+                            div.modal-header
+                                h5.modal-title(id="modificarGerenteLabel") Modificar Gerente
+                                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                            div.modal-body
+                                if(errores)
+                                    each error in errores
+                                        .alert.col.alert-danger.text-center=error.mensaje
+                                form(action="/editarGerentes" method="POST")
+                                    .mb-3
+                                        label.form-label(for='id_grt') Id
+                                        input.form-control(type='text', placeholder="id_grt", name="id_grt",
+                                        value=gerente.id_grt readonly)
+                                    .mb-3
+                                        label.form-label(for='nombre') Nombre
+                                        input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
+                                        value=gerente.nombre)
+                                    .mb-3
+                                        label.form-label(for='apellidoPaterno') Apellido Paterno
+                                        input#apellidoPaterno.form-control(type='text', placeholder="Apellido Paterno", name="ap_paterno",
+                                        value=`${gerente.ap_paterno}`)
+                                    .mb-3
+                                        label.form-label(for='apellidoMaterno') Apellido Materno
+                                        input#apellidoMaterno.form-control(type='text', placeholder="Apellido Materno", name="ap_materno",
+                                        value=`${gerente.ap_materno}`)
+                                    .mb-3
+                                        label.form-label(for='telefono') Telefono
+                                        input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
+                                        value=`${gerente.telefono}`)
+                                    button.btn.btn-success(type="submit") Aceptar
+                            div.modal-footer
+                                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                                
+
+        <!--Eliminar Gerente Modal-->
+            each gerente in gerentes
+                div.modal.fade(id=`${gerente.nombre + gerente.id_grt + gerente.ap_materno}` tabindex="-1" aria-labelledby= `${gerente.nombre + gerente.id_grt + gerente.ap_materno}` aria-hidden="true")
+                    div.modal-dialog.modal-lg
+                        div.modal-content
+                            div.modal-header
+                                h5.modal-title(id="eliminarGerenteLabel") Eliminar Gerente
+                                button.btn-close(id="disabledTextInput" type="button" data-bs-dismiss="modal" aria-label="Close")
+                            div.modal-body
+                                form(action="/eliminarGerentes" method="POST")
+                                    h2.modal-title ¿Seguro desea eliminar el gerento con Id?
+                                    input.form-control(type='text', placeholder="id_grt", name="id_grt",
+                                        value=`${gerente.id_grt}` readonly)
+                                    table.table.table-borderless
+                                        thead
+                                            tr
+                                                th(scope="col") Nombre
+                                                th(scope="col") Apellido Paterno
+                                                th(scope="col") Apellido Materno
+                                                th(scope="col") Telefono
+                                                th(scpoe="col")
+                                        tbody
+                                            tr
+                                                td #{gerente.nombre}
+                                                td #{gerente.ap_paterno}
+                                                td #{gerente.ap_materno}
+                                                td #{gerente.telefono}
+                                    button.btn.btn-danger(type="submit") Eliminar
+                            div.modal-footer
+                                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+                                

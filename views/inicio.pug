@@ -1,0 +1,29 @@
+extends ./layout/index.pug
+block compartircontenido
+    main.contenedor
+        div.image-main.hero.container
+            h1.titulos.text-center.text-white.fw-bold.p-5.text-shadow Encuentra Tu Hotel Ideal
+            div.contenido-hero.d-flex.flex-column.align-items-center
+                p.fs-3.text-white.p-5.text-center.w-10 Disfruta de nuestras habitaciones de lujo y maravillate con nuestras grandes vistas
+                div.localizacion.d-flex.align-intems-center.pt-5
+                        i.fa-solid.fa-location-dot.text-warning.fs-2.p-2             
+                        p.text-white.fw-bold.p-2.fs-2 Puebla, Zacatlan de las manzanas
+                a(href="https://goo.gl/maps/HNGGaaM1KEnDTWUa8")
+                    button.button.btn.btn-primary Ver Ubicacion
+        div.container.mt-3
+            div.container.titulo
+                h2.fs-1.text-black.fw-bold.text-center Galeria
+            div.container.mt-4
+                div.row
+                    div.col
+                        img.img-z(src="/img/beer.jpg")
+                    div.col
+                        img.img-z(src="/img/reloj.jpg")
+                    div.col
+                        img.img-z(src="/img/paisaje.jpg")
+                div.row
+                    div.col
+                        img.img-z(src="/img/iglesia.jpg")
+                    div.col
+                        img.img-z(src="/img/reloj2.jpg")
+
