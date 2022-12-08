@@ -1,0 +1,31 @@
+.cabecera
+    h1 Zacatlan de las Manzanas
+    div.usuario
+        if (rol === 'usr')
+            i.fa-solid.fa-user
+            p Usuario
+        else
+            i.fa-solid.fa-user-tie
+            p Administrador
+aside 
+    div.aside-styles
+        h1 Administracion            
+        div.navegacion-enlaces
+            a.nav-link(href="/hoteles")
+                .contenedor-icono
+                    i.fa-solid.fa-hotel
+                p Hotel
+            a.nav-link(href="/habitaciones")
+                .contenedor-icono
+                    i.fa-solid.fa-bed
+                p Habitaciones
+            a.nav-link(href="/gerentes")
+                .contenedor-icono
+                    i.fa-solid.fa-user-tie
+                p Gerentes
+    div.log-out
+        a.nav-link.log-out-action(href="/cerrarSesion")
+            .contenedor-icono
+                i.fa-solid.fa-right-from-bracket
+            p Salir
+    script(src="https://kit.fontawesome.com/3c1c105086.js", crossorigin="anonymous")

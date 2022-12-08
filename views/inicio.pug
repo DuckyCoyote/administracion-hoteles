@@ -1,0 +1,13 @@
+extends ./layout/index.pug
+block compartircontenido
+        .gerentes
+            .bienvenido
+                h1 Bienvenido usted a ingresado como
+                if (rol === 'usr')
+                    i.fa-solid.fa-user
+                    p Usuario
+                else
+                    i.fa-solid.fa-user-tie
+                    p Administrador
+
+

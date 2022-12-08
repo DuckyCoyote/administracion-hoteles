@@ -1,0 +1,25 @@
+doctype html 
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UACompatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pagina}
+        link(rel="stylesheet", href= "/css/bootstrap.css")        
+        link(rel="stylesheet", href="/css/styles.css")
+    body
+        div.contenedor-login 
+            div.contenedor-formulario
+                form(action="/credenciales" method="POST" class="validacion")
+                    h1.text-center Login
+                    .mb-3
+                        label.form-label(for='usuario') Usuario
+                        input#usuario.form-control(type='text', placeholder="Usuario", name="usuario",
+                        value=usuario) 
+                    .mb-3
+                        label.form-label(for='clave') Contraseña
+                        input#clave.form-control(type='password', placeholder="Clave", name="clave",
+                        value=clave)
+                    button.btn.btn-primary(type="submit") Entrar
+        script(src="https://kit.fontawesome.com/3c1c105086.js", crossorigin="anonymous")
+        script(src="/js-bootstrap/bootstrap.js")
