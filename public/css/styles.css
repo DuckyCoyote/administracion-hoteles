@@ -160,6 +160,14 @@ aside p {
 .table td {
     border: none
 }
+td img{
+    max-width: 7rem;
+    width: 7rem;
+    max-height: 7rem;
+    height: 7rem;
+    border-radius: 5rem;
+    object-fit: contain;
+}
 .table-head-style{
     font-family: var(--fuenteJosef);
     font-size: 2.5rem;

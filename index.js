@@ -1,4 +1,5 @@
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import rutas from "./rutas/index.js";
 import db from "./config/db.js";
 import session from "express-session";
@@ -21,6 +22,8 @@ app.use(session({
     resave:true,
     saveUninitialized:true
 }));
+
+app.use(fileUpload());
 
 app.use(express.static("public"));
 

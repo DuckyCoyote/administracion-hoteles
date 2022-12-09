@@ -23,13 +23,16 @@ export const gerentes = db.define('gerentes', {
     },
     id_htl:{
         type:Sequelize.INTEGER
+    },
+    img_ruta:{
+        type:Sequelize.STRING
     }
 },
 { timestamps: false }
 );
 gerentes.hasOne(Hoteles, {
 foreignKey: {
-  name: "id_grte",
+  name: "id_grt",
 },
 });
 

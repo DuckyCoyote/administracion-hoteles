@@ -9,6 +9,7 @@ block compartircontenido
             table.table.table-borderless.table-responsive.table-main.tabla
                 thead
                     tr.table-head-style
+                        th
                         th(scope="col") Nombre
                         th(scope="col") Apellido Paterno
                         th(scope="col") Apellido Materno
@@ -17,19 +18,21 @@ block compartircontenido
                 tbody
                     each gerente in gerentes
                         tr.table-body-style
+                            td 
+                                img(src=`./uploads/${gerente.img_ruta}`)
                             td #{gerente.nombre}
                             td #{gerente.ap_paterno}
                             td #{gerente.ap_materno}
                             td #{gerente.telefono}
                             td.tabla-botones
-                                if (rol==="usr")                           
-                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#${gerente.nombre + gerente.ap_materno + gerente.id_grt}`)
+                                if (rol==="adm")                           
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${gerente.nombre + gerente.ap_materno + gerente.id_grt}`)
                                         i.fa-regular.fa-pen-to-square
-                                else         
-                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#${gerente.nombre + gerente.ap_materno + gerente.id_grt}`)
-                                        i.fa-regular.fa-pen-to-square
-                                    button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#${gerente.nombre + gerente.id_grt + gerente.ap_materno}`)
+                                    button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${gerente.nombre + gerente.id_grt + gerente.ap_materno}`)
                                         i.fa-solid.fa-trash
+                                else         
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${gerente.nombre + gerente.ap_materno + gerente.id_grt}`)
+                                        i.fa-regular.fa-pen-to-square
 
         <!--Agregar Gerente Modal-->
             div.modal.fade(id="agregarGerente" tabindex="-1" aria-labelledby="agregarGerente" aria-hidden="true")
@@ -42,7 +45,10 @@ block compartircontenido
                             if(errores)
                                 each error in errores
                                     .alert.col.alert-danger.text-center=error.mensaje
-                            form(action="/agregarGerentes" method="POST")
+                            form(action="/agregarGerentes" method="POST" enctype="multipart/form-data")
+                                .mb-3
+                                    label.form-label(for='img_ruta') Foto
+                                    input#img_ruta.form-control(type="file",name="img_ruta" accept="image/*", value=img_ruta)
                                 .mb-3
                                     label.form-label(for='nombre') Nombre
                                     input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
@@ -56,10 +62,14 @@ block compartircontenido
                                     input#apellidoMaterno.form-control(type='text', placeholder="Apellido Materno", name="ap_materno",
                                     value=ap_materno)
                                 .mb-3
+                                    label.form-label(for='id_htl') ID Hotel
+                                    input#id_htl.form-control(type='number', placeholder="Id Hotel", name="id_htl",
+                                    value=id_htl)
+                                .mb-3
                                     label.form-label(for='telefono') Telefono
                                     input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
                                     value=telefono)
-                                button.btn.btn-primary.btn-block(type="submit")  Agregar
+                                input.btn.btn-primary(type="submit" placeholder="Agregar")
                         div.modal-footer
                             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
                             
@@ -68,7 +78,7 @@ block compartircontenido
                 <!--Modificar Gerente Modal-->
 
             each gerente in gerentes
-                div.modal.fade(id=`${gerente.nombre + gerente.ap_materno + gerente.id_grt}` tabindex="-1" aria-labelledby=`${gerente.nombre + gerente.ap_materno + gerente.id_grt}` aria-hidden="true")
+                div.modal.fade(id=`mod${gerente.nombre + gerente.ap_materno + gerente.id_grt}` tabindex="-1" aria-labelledby=`mod${gerente.nombre + gerente.ap_materno + gerente.id_grt}` aria-hidden="true")
                     div.modal-dialog
                         div.modal-content
                             div.modal-header
@@ -102,11 +112,10 @@ block compartircontenido
                                     button.btn.btn-success(type="submit") Aceptar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
-                                
 
         <!--Eliminar Gerente Modal-->
             each gerente in gerentes
-                div.modal.fade(id=`${gerente.nombre + gerente.id_grt + gerente.ap_materno}` tabindex="-1" aria-labelledby= `${gerente.nombre + gerente.id_grt + gerente.ap_materno}` aria-hidden="true")
+                div.modal.fade(id=`mod${gerente.nombre + gerente.id_grt + gerente.ap_materno}` tabindex="-1" aria-labelledby= `mod${gerente.nombre + gerente.id_grt + gerente.ap_materno}` aria-hidden="true")
                     div.modal-dialog.modal-lg
                         div.modal-content
                             div.modal-header

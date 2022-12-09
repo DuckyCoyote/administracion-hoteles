@@ -3,28 +3,27 @@ block compartircontenido
     .habitaciones
         h1 #{pagina}
         div.lista-gerentes
-            button.btn.btn-primary.m-3.fw-bold(data-bs-toggle="modal" data-bs-target="#agregar-habitacion") Agregar Habitacion 
+            button.btn.btn-primary.m-3.fw-bold(data-bs-toggle="modal" data-bs-target="#agregar-habitacion") Agregar Tipo Habitacion 
                 i.fa-solid.fa-plus                
             table.table.table-borderless.table-responsive.table-main
                 thead
                     tr.table-head-style
                         th(scope="col") Nombre
-                        th(scope="col") Piso
-                        th(scope="col") Refrigerador    
+                        th(scope="col") Precio 
                 tbody
-                    each habitacion in habitaciones
+                    each Catalogo in catalogo
                         tr.table-body-style
-                            td #{habitacion.nombre}
-                            td #{habitacion.piso}
-                            if (habitacion.refrigerador === false)
-                                td No
-                            else
-                                td Si
-                            td.tabla-botones                        
-                                button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${habitacion.nombre + habitacion.id_hbt + habitacion.id_htl}`)
+                            td #{Catalogo.nombre_hbt}
+                            td #{Catalogo.precio}
+                            td.tabla-botones 
+                                if (rol === 'adm')                       
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${Catalogo.nombre_hbt + Catalogo.precio}`)
+                                        i.fa-regular.fa-pen-to-square
+                                    button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${Catalogo.nombre_hbt + Catalogo.precio + Catalogo.nombre_hbt}`)
+                                        i.fa-solid.fa-trash
+                                else
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${Catalogo.nombre_hbt + Catalogo.precio}`)
                                     i.fa-regular.fa-pen-to-square
-                                button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${habitacion.piso + habitacion.id_htl + habitacion.id_hbt}`)
-                                    i.fa-solid.fa-trash
 
         <!--Agregar habitacion Modal-->
             div.modal.fade(id="agregar-habitacion" tabindex="-1" aria-labelledby="agregar-habitacion" aria-hidden="true")
@@ -55,8 +54,8 @@ block compartircontenido
                                     label.form-label(for='id_htl') ID Hotel
                                     select.form-control(id="id_htl" aria-label="Id Hotel", name="id_htl")  
                                         option(selected) Seleccionar un Hotel
-                                        each idHtl in idHtlSel
-                                            option(value=idHtl.dataValues.id_htl) #{idHtl.dataValues.id_htl}
+                                        //- each idHtl in idHtlSel
+                                            //- option(value=idHtl.dataValues.id_htl) #{idHtl.dataValues.id_htl}
                                             
                                 button.btn.btn-primary.btn-block(type="submit")  Agregar
                         div.modal-footer
@@ -65,8 +64,8 @@ block compartircontenido
 
                 <!--Modificar Habitacion Modal-->
 
-            each habitacion in habitaciones
-                div.modal.fade(id=`mod${habitacion.nombre + habitacion.id_hbt + habitacion.id_htl}` tabindex="-1" aria-labelledby=`mod${habitacion.nombre + habitacion.id_hbt + habitacion.id_htl}` aria-hidden="true")
+            each Catalogo in catalogo
+                div.modal.fade(id=`mod${Catalogo.nombre_hbt + Catalogo.precio}` tabindex="-1" aria-labelledby=`mod${Catalogo.nombre_hbt + Catalogo.precio}` aria-hidden="true")
                     div.modal-dialog
                         div.modal-content
                             div.modal-header
@@ -78,40 +77,31 @@ block compartircontenido
                                         .alert.col.alert-danger.text-center=error.mensaje
                                 form(action="/editarHabitaciones" method="POST")
                                     .mb-3
-                                        label.form-label(for='id_hbt') ID Habitacion
-                                        input#id_hbt.form-control(type='number', placeholder="Id Habitacion", name="id_hbt",
-                                        value=habitacion.id_hbt readonly)
-                                    .mb-3
                                         label.form-label(for='nombre') Nombre
                                         input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
-                                        value=habitacion.nombre)
-                                    .mb-3
-                                        label.form-label(for='piso') Piso
-                                        input#piso.form-control(type='text', placeholder="Piso", name="piso",
-                                        value=habitacion.piso)
-                                    .mb-3
-                                        label.form-label(for='refrigerador') Refrigerador
-                                        select.form-control(id='refrigerador' aria-label='Refrigerador' name='refrigerador')
-                                            if (habitacion.refrigerador === false)
-                                                option(value='0' selected) No
-                                            else
-                                                option(value='1' selected) Si
-                                            option(value='1') Si
-                                            option(value='0') No
+                                        value=Catalogo.nombre)
                                     .mb-3
                                         label.form-label(for='id_htl') ID Hotel
-                                        select.form-control(id="id_htl" aria-label="Id Hotel", name="id_htl")  
-                                            option(selected) #{habitacion.id_htl}
-                                            each idHtl in idHtlSel
-                                                option(value=idHtl.dataValues.id_htl) #{idHtl.dataValues.id_htl}
+                                        input#id_htl.form-control(type='number', placeholder="Id Hotel", name="id_htl",
+                                        value=Catalogo.id_htl readonly)                                    
+                                    .mb-3
+                                        label.form-label(for='id_hbt') ID Habitacion
+                                        select.form-control(id="id_hbt" aria-label="Id Habitacion", name="id_hbt")  
+                                            option(selected) #{Catalogo.id_hbt}
+                                            //- each idHtl in idHtlSel
+                                            //-     option(value=idHtl.dataValues.id_htl) #{idHtl.dataValues.id_htl}
+                                    .mb-3
+                                        label.form-label(for='precio') Precio
+                                        input#precio.form-control(type='number', placeholder="Precio", name="precio",
+                                        value=Catalogo.precio)
                                     button.btn.btn-primary.btn-block(type="submit") Editar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
                                 
 
         <!--Eliminar Habitacion Modal-->
-            each habitacion in habitaciones
-                div.modal.fade(id=`mod${habitacion.piso + habitacion.id_htl + habitacion.id_hbt}` tabindex="-1" aria-labelledby= `mod${habitacion.piso + habitacion.id_htl + habitacion.id_hbt}` aria-hidden="true")
+            each Catalogo in catalogo
+                div.modal.fade(id=`mod${Catalogo.nombre_hbt + Catalogo.precio + Catalogo.nombre_hbt}` tabindex="-1" aria-labelledby= `mod${Catalogo.nombre_hbt + Catalogo.precio + Catalogo.nombre_hbt}` aria-hidden="true")
                     div.modal-dialog.modal-lg
                         div.modal-content
                             div.modal-header
@@ -121,25 +111,20 @@ block compartircontenido
                                 form(action="/eliminarHabitaciones" method="POST")
                                     h2.modal-title ¿Seguro desea eliminar la habitacion con Id?
                                     input.form-control(type='text', placeholder="id_hbt", name="id_hbt",
-                                        value=`${habitacion.id_hbt}` readonly)
+                                        value=`${Catalogo.id_hbt}` readonly)
                                     table.table.table-borderless
                                         thead
                                             tr.table-head-style
-                                                th(scope="col") id
                                                 th(scope="col") Nombre
-                                                th(scope="col") Piso
-                                                th(scope="col") Refrigerador
-                                                th(scope="col") ID Hotel        
+                                                th(scope="col") ID Hotel
+                                                th(scope="col") ID Habitacion
+                                                th(scope="col") Precio     
                                         tbody
                                             tr.table-body-style
-                                                td #{habitacion.id_hbt}
-                                                td #{habitacion.nombre}
-                                                td #{habitacion.piso}
-                                                if (habitacion.refrigerador === false)
-                                                    td No
-                                                else
-                                                    td Si
-                                                td #{habitacion.id_htl}
+                                                td #{Catalogo.nombre}
+                                                td #{Catalogo.id_hbt}
+                                                td #{Catalogo.id_htl}
+                                                td #{Catalogo.precio}
                                     button.btn.btn-danger(type="submit") Eliminar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar

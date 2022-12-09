@@ -20,11 +20,15 @@ block compartircontenido
                             td #{hotel.direccion}
                             td #{hotel.telefono}
                             td #{hotel.correo}
-                            td                        
-                                button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.telefono + hotel.id_grt + hotel.id_htl}`)
-                                    i.fa-regular.fa-pen-to-square
-                                button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.id_grt + hotel.id_htl + hotel.telefono}`)
-                                    i.fa-solid.fa-trash
+                            td.tabla-botones      
+                                if (rol === 'adm')              
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.telefono + hotel.id_grt + hotel.id_htl}`)
+                                        i.fa-regular.fa-pen-to-square
+                                    button.btn.btn-danger.ml-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.id_grt + hotel.id_htl + hotel.telefono}`)
+                                        i.fa-solid.fa-trash
+                                else              
+                                    button.btn.btn-success.mr-2(data-bs-toggle="modal" data-bs-target=`#mod${hotel.telefono + hotel.id_grt + hotel.id_htl}`)
+                                        i.fa-regular.fa-pen-to-square
 
         <!--Agregar Gerente Modal-->
             div.modal.fade(id="agregarHotel" tabindex="-1" aria-labelledby="agregarHotel" aria-hidden="true")
@@ -54,12 +58,6 @@ block compartircontenido
                                     label.form-label(for='correo') Correo
                                     input#correo.form-control(type='text', placeholder="Correo", name="correo",
                                     value=correo)
-                                .mb-3
-                                    label.form-label(for='id_grt') ID Gerente
-                                    select.form-control(id="id_grt" aria-label="Default select example", name="id_grt")  
-                                        option(selected) Seleccionar un Gerente
-                                        each idGrt in idGrtSel
-                                            option(value=idGrt.dato1) #{idGrt.dato1}
                                 button.btn.btn-primary.btn-block(type="submit")  Agregar
                         div.modal-footer
                             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
@@ -99,15 +97,6 @@ block compartircontenido
                                         label.form-label(for='correo') Correo
                                         input#correo.form-control(type='text', placeholder="Correo", name="correo",
                                         value=hotel.correo)
-                                    .mb-3
-                                        label.form-label(for='id_grt') ID Gerente
-                                        select.form-control(id="id_grt" aria-label="Default select example", name="id_grt")  
-                                            option(selected) #{hotel.id_grt}
-                                            each idGrt in idGrtSel
-                                                option(value=idGrt.dato1) #{idGrt.dato1}
-                                        <!--label.form-label(for='id_grt') Id Gerente-->
-                                        <!--input#id_grt.form-control(type='number', placeholder="ID Gerente", name="id_grt",-->
-                                        <!--value=hotel.id_grt)-->
                                     button.btn.btn-primary.btn-block(type="submit")  Aceptar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
@@ -136,7 +125,6 @@ block compartircontenido
                                                 th(scope="col") Direcion
                                                 th(scope="col") Telefono
                                                 th(scope="col") Correo
-                                                th(scpoe="col") Id Gerente
                                                 th(scpoe="col") 
                                         tbody
                                             tr
@@ -144,7 +132,6 @@ block compartircontenido
                                                 td #{hotel.direccion}
                                                 td #{hotel.telefono}
                                                 td #{hotel.correo}
-                                                td #{hotel.id_grt}
                                     button.btn.btn-danger(type="submit") Eliminar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
