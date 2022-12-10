@@ -24,8 +24,8 @@ const agregarGerente = async (req, res) => {
     } = req.body;
     const { img_ruta } = req.files;
     const img_rt = img_ruta.name
-    console.log(nombre, ap_paterno, ap_materno, telefono, id_htl, img_rt)
-    errores = validarForm(nombre, ap_paterno, ap_materno, telefono, img_rt);
+
+    errores = validarForm(nombre, ap_paterno, ap_materno, telefono);
     if (errores.length > 0) {
         muestraErrores(
             req,
@@ -64,24 +64,25 @@ const editarGerente = async (req, res) => {
         ap_materno,
         telefono,
         id_htl,
-        img_ruta,
     } = req.body;
+
     errores = validarForm(
         nombre,
         ap_paterno,
         ap_materno,
         telefono,
         id_htl,
-        img_ruta
     );
     if (errores.length > 0) {
         muestraErrores(
+            req,
+            res,
+            errores,
             nombre,
             ap_paterno,
             ap_materno,
             telefono,
             id_htl,
-            img_ruta
         );
     } else {
         //Almacenar en la base de datos
@@ -93,7 +94,6 @@ const editarGerente = async (req, res) => {
                     ap_materno,
                     telefono,
                     id_htl,
-                    img_ruta,
                 },
                 {
                     where: {
@@ -124,33 +124,25 @@ function validarForm(
     ap_materno,
     telefono,
     id_htl,
-    id_hbt,
-    img_rt
 ) {
     const errores = [];
-    if (nombre === "") {
+    if (nombre.trim() === "") {
         errores.push({ mensaje: "El nombre no debe ser vacio" });
     }
-    if (ap_paterno === "") {
+    if (ap_paterno.trim() === "") {
         errores.push({ mensaje: "El apellido paterno no debe ser vacio" });
     }
-    if (ap_materno === "") {
+    if (ap_materno.trim() === "") {
         errores.push({ mensaje: "El apellido materno no debe ser vacio" });
     }
-    if (telefono === "") {
+    if (telefono.trim() === "") {
         errores.push({ mensaje: "El telefono no debe ser vacio" });
     }
-    if (telefono === "") {
+    if (telefono.trim() === "") {
         errores.push({ mensaje: "El telefono debe ser de 10 digitos" });
     }
-    if (id_htl === "") {
+    if (id_htl.trim() === "") {
         errores.push({ mensaje: "El ID Hotel no debe ser vacio" });
-    }
-    if (id_hbt === "") {
-        errores.push({ mensaje: "El ID Habitacion no debe ser vacio" });
-    }
-    if (img_rt === "") {
-        errores.push({ mensaje: "Debe Seleccionar una imagen" });
     }
 
     return errores;
@@ -189,6 +181,7 @@ const muestraErrores = async (
         telefono,
         id_htl,
         img_ruta,
+        rol: req.session.rol
     });
 };
 export { agregarGerente, editarGerente, eliminarGerente };

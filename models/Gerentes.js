@@ -38,6 +38,6 @@ foreignKey: {
 
 Hoteles.belongsTo(gerentes, {
 foreignKey: {
-  name: "id_grt",
+  name: "id_htl",
 },
 });

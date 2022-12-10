@@ -62,9 +62,11 @@ block compartircontenido
                                     input#apellidoMaterno.form-control(type='text', placeholder="Apellido Materno", name="ap_materno",
                                     value=ap_materno)
                                 .mb-3
-                                    label.form-label(for='id_htl') ID Hotel
-                                    input#id_htl.form-control(type='number', placeholder="Id Hotel", name="id_htl",
-                                    value=id_htl)
+                                    label.form-label(for='id_htl') Hotel
+                                    select.form-control(id="id_htl" aria-label="Default select example", name="id_htl")  
+                                        each hotel in hoteles                                            
+                                            option(value=hotel.id_htl) #{hotel.nombre}
+                                            #{console.log(hotel.id_htl)}
                                 .mb-3
                                     label.form-label(for='telefono') Telefono
                                     input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
@@ -85,14 +87,14 @@ block compartircontenido
                                 h5.modal-title(id="modificarGerenteLabel") Modificar Gerente
                                 button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
                             div.modal-body
-                                if(errores)
+                                if ( errores )
                                     each error in errores
                                         .alert.col.alert-danger.text-center=error.mensaje
-                                form(action="/editarGerentes" method="POST")
+                                form(action="/editarGerentes" method="POST" enctype="multipart/form-data")
                                     .mb-3
                                         label.form-label(for='id_grt') Id
                                         input.form-control(type='text', placeholder="id_grt", name="id_grt",
-                                        value=gerente.id_grt readonly)
+                                        value=gerente.id_grt readonly)                            
                                     .mb-3
                                         label.form-label(for='nombre') Nombre
                                         input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
@@ -109,6 +111,11 @@ block compartircontenido
                                         label.form-label(for='telefono') Telefono
                                         input#telefono.form-control(type='number', placeholder="Telefono", name="telefono",
                                         value=`${gerente.telefono}`)
+                                    .mb-3
+                                        label.form-label(for='id_htl') Hotel
+                                        select.form-control(id="id_htl" aria-label="Default select example", name="id_htl")  
+                                            each hotel in hoteles                                            
+                                                option(value=hotel.id_htl) #{hotel.nombre}
                                     button.btn.btn-success(type="submit") Aceptar
                             div.modal-footer
                                 button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar

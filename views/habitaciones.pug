@@ -42,14 +42,9 @@ block compartircontenido
                                     input#nombre.form-control(type='text', placeholder="Nombre", name="nombre",
                                     value=nombre)
                                 .mb-3
-                                    label.form-label(for='piso') Piso
-                                    input#piso.form-control(type='text', placeholder="Piso", name="piso",
-                                    value=piso)
-                                .mb-3
-                                    label.form-label(for='refrigerador') Refrigerador
-                                        select.form-control(id='refrigerador' aria-label='Refrigerador' name='refrigerador')                                            
-                                            option(value='1') Si
-                                            option(value='0') No
+                                    label.form-label(for='piso') Precio
+                                    input#piso.form-control(type='number', placeholder="Precio", name="precio",
+                                    value=precio)
                                 .mb-3
                                     label.form-label(for='id_htl') ID Hotel
                                     select.form-control(id="id_htl" aria-label="Id Hotel", name="id_htl")  

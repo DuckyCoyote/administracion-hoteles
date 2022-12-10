@@ -7,7 +7,6 @@ import { nanoid } from "nanoid";
 import { Credenciales } from './models/Credenciales.js';
 
 const app = express();
-
 db.authenticate()
     .then(() => console.log("Conexion Exitosa"))
     .catch(error => console.log(error));

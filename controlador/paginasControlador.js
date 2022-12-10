@@ -12,11 +12,25 @@ const paginaInicio = (req,res) => {
 
 const paginaGerentes = async (req, res) => {
     const gerentesCont = await gerentes.findAll({
-        attributes : ["id_grt", "nombre", "ap_paterno", "ap_materno", "telefono", "img_ruta"]
+        attributes : ["id_grt", "nombre", "ap_paterno", "ap_materno", "telefono", "id_htl", "img_ruta"]
     });
+
+    const hoteles = await Hoteles.findAll({
+        attributes : ["id_htl", "nombre", "direccion", "telefono", "correo"]
+    });
+
+    const hotelesCont = await db.query(
+        "SELECT hoteles.id_htl, hoteles.nombre FROM hoteles LEFT JOIN gerentes ON hoteles.id_htl = gerentes.id_htl WHERE gerentes.id_htl IS NULL;"
+        , {
+            model: gerentes,
+            mapToModel: true,
+        }
+    )
     res.render("gerentes", {
         pagina: "Gerentes",
         gerentes: gerentesCont,
+        hotelesCont,
+        hoteles,
         rol: req.session.rol,
     });
 }
@@ -58,6 +72,7 @@ const paginaHabitaciones = async (req, res) => {
     res.render("habitaciones", {
         pagina: "Catalogo",
         catalogo,
+        
         rol: req.session.rol
     })
 }
